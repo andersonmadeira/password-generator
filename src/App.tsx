@@ -1,17 +1,29 @@
 import React, { useState } from 'react'
 import Checkbox from './components/Checkbox'
 import { getRandomPassword, GenerationOptions } from './utils'
+import Slider from './components/Slider'
 
 function App() {
   const [generatedPassword, setGeneratedPassword] = useState('')
-  const baseOptions: GenerationOptions = { length: 20 }
-  const [options, setOptions] = useState(baseOptions)
+  const initialOptions: GenerationOptions = { length: 20 }
+  const [options, setOptions] = useState(initialOptions)
 
   return (
     <div className="app-container">
       <h1>Password Generator</h1>
+      <h2>Length: {options.length} </h2>
+      <Slider
+        value={options.length}
+        onChange={length =>
+          setOptions({
+            ...options,
+            length,
+          })
+        }
+      />
+      <h2>Characters:</h2>
       <Checkbox
-        label="lowercase chars (a-z)"
+        label="lowercase (a-z)"
         onChange={checked =>
           setOptions({
             ...options,
@@ -20,7 +32,7 @@ function App() {
         }
       />
       <Checkbox
-        label="uppercase chars (A-Z)"
+        label="uppercase (A-Z)"
         onChange={checked =>
           setOptions({
             ...options,
@@ -29,7 +41,7 @@ function App() {
         }
       />
       <Checkbox
-        label="numbers chars (0-9)"
+        label="numbers (0-9)"
         onChange={checked =>
           setOptions({
             ...options,
@@ -38,7 +50,7 @@ function App() {
         }
       />
       <Checkbox
-        label="special chars (*!@%_#)"
+        label="special (*!@%_#)"
         onChange={checked =>
           setOptions({
             ...options,

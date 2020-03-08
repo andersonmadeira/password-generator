@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
 
-const Checkbox = ({ label }) => {
+interface Props {
+  label: string
+  onChange?: (checked: boolean) => void
+}
+
+const Checkbox: React.FC<Props> = ({ label, onChange }) => {
   const [checked, setChecked] = useState(false)
   return (
     <label className="container">
@@ -9,8 +14,9 @@ const Checkbox = ({ label }) => {
         type="checkbox"
         checked={checked}
         onChange={() => {
-          console.log('toggleCheck')
           setChecked(!checked)
+
+          if (onChange) onChange(!checked)
         }}
       />
       <span className="checkmark"></span>

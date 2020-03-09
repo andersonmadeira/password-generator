@@ -59,12 +59,19 @@ function App() {
         }
       />
       <button
+        className="button"
+        style={{ marginTop: 10 }}
         type="submit"
         onClick={() => setGeneratedPassword(getRandomPassword(options))}
       >
         Generate
       </button>
-      <p>Result: {generatedPassword}</p>
+      <div
+        className="card"
+        style={{ marginTop: 20, fontSize: '1.5em', overflowWrap: 'break-word' }}
+      >
+        {generatedPassword}
+      </div>
     </div>
   )
 }

@@ -50,7 +50,7 @@ function App() {
         }
       />
       <Checkbox
-        label="special (*!@%_#)"
+        label="symbols (*!@%_#)"
         onChange={checked =>
           setOptions({
             ...options,
@@ -62,16 +62,36 @@ function App() {
         className="button"
         style={{ marginTop: 10 }}
         type="submit"
-        onClick={() => setGeneratedPassword(getRandomPassword(options))}
+        onClick={() => {
+          if (
+            !options.alphabets?.lowercase &&
+            !options.alphabets?.uppercase &&
+            !options.alphabets?.numbers &&
+            !options.alphabets?.symbols
+          ) {
+            alert(
+              'Please select at least one set of characters to generate the password!',
+            )
+            return
+          }
+
+          setGeneratedPassword(getRandomPassword(options))
+        }}
       >
         Generate
       </button>
-      <div
-        className="card"
-        style={{ marginTop: 20, fontSize: '1.5em', overflowWrap: 'break-word' }}
-      >
-        {generatedPassword}
-      </div>
+      {generatedPassword ? (
+        <div
+          className="card"
+          style={{
+            marginTop: 20,
+            fontSize: '1.5em',
+            overflowWrap: 'break-word',
+          }}
+        >
+          {generatedPassword}
+        </div>
+      ) : null}
     </div>
   )
 }

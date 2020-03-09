@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import Checkbox from './components/Checkbox'
-import { getRandomPassword, GenerationOptions } from './utils'
+import { getRandomPassword, GenerationOptions, copyToClipboard } from './utils'
 import Slider from './components/Slider'
+import CopyButton from './components/CopyButton'
 
 function App() {
   const [generatedPassword, setGeneratedPassword] = useState('')
@@ -81,16 +82,12 @@ function App() {
         Generate
       </button>
       {generatedPassword ? (
-        <div
-          className="card"
-          style={{
-            marginTop: 20,
-            fontSize: '1.5em',
-            overflowWrap: 'break-word',
-          }}
-        >
-          {generatedPassword}
-        </div>
+        <>
+          <div className="card">
+            <CopyButton onClick={() => copyToClipboard(generatedPassword)} />
+            {generatedPassword}
+          </div>
+        </>
       ) : null}
     </div>
   )

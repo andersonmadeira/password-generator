@@ -4,16 +4,18 @@ const alphabetNumbers = '0123456789'
 const alphabetSymbols = '!@#$%&*()_`´{[^~]};:/?<>,.=-+'
 
 export interface GenerationOptions {
-  length: number;
+  length: number
   alphabets?: {
-    lowercase?: boolean;
-    uppercase?: boolean;
-    numbers?: boolean;
-    symbols?: boolean;
+    lowercase?: boolean
+    uppercase?: boolean
+    numbers?: boolean
+    symbols?: boolean
   }
 }
 
-export function getRandomPassword(options: GenerationOptions = { length: 5 }): string {
+export function getRandomPassword(
+  options: GenerationOptions = { length: 5 },
+): string {
   const alphabet =
     (options.alphabets?.lowercase ? alphabetLowercase : '') +
     (options.alphabets?.uppercase ? alphabetUppercase : '') +
@@ -26,4 +28,17 @@ export function getRandomPassword(options: GenerationOptions = { length: 5 }): s
   }
 
   return result
+}
+
+export function copyToClipboard(text: string) {
+  const inputElem = document.createElement('input')
+  inputElem.value = text
+  document.body.appendChild(inputElem)
+
+  inputElem.focus()
+  inputElem.select()
+
+  document.execCommand('copy')
+
+  document.body.removeChild(inputElem)
 }

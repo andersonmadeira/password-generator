@@ -19,8 +19,8 @@
   cursor: pointer;
 
   transition: all 0.5s ease;
-}
 
-.button:hover {
-  background: $main-hover-color;
+  &:hover {
+    background: $main-hover-color;
+  }
 }

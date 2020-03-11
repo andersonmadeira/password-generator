@@ -2,21 +2,22 @@ import React, { useState } from 'react'
 
 interface Props {
   label: string
+  checked?: boolean
   onChange?: (checked: boolean) => void
 }
 
-const Checkbox: React.FC<Props> = ({ label, onChange }) => {
-  const [checked, setChecked] = useState(false)
+const Checkbox: React.FC<Props> = ({ label, checked = false, onChange }) => {
+  const [isChecked, setIsChecked] = useState(checked)
   return (
     <label className="checkbox">
       {label}
       <input
         type="checkbox"
-        checked={checked}
+        checked={isChecked}
         onChange={() => {
-          setChecked(!checked)
+          setIsChecked(!isChecked)
 
-          if (onChange) onChange(!checked)
+          if (onChange) onChange(!isChecked)
         }}
       />
       <span className="checkbox__checkmark"></span>

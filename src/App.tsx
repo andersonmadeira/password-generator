@@ -12,6 +12,7 @@ import CopyButton from './components/CopyButton'
 function App() {
   const [generatedPassword, setGeneratedPassword] = useState('')
   const [shuffleValue, setShuffleValue] = useState('')
+  const [animationEnabled, setAnimationEnabled] = useState(true)
   const [options, setOptions] = useState({
     length: 20,
     alphabets: {},
@@ -20,7 +21,7 @@ function App() {
   useEffect(() => {
     let charIndex = 0
 
-    if (generatedPassword) {
+    if (generatedPassword && animationEnabled) {
       const shuffleInterval = setInterval(() => {
         if (charIndex > generatedPassword.length) {
           clearInterval(shuffleInterval)
@@ -38,11 +39,11 @@ function App() {
         setShuffleValue(newSuffleValue)
 
         charIndex++
-      }, 40)
+      }, 30)
 
       return () => clearInterval(shuffleInterval)
     }
-  }, [generatedPassword, options])
+  }, [generatedPassword, animationEnabled, options])
 
   return (
     <div className="app-container">
@@ -59,7 +60,7 @@ function App() {
       />
       <h2>Characters:</h2>
       <Checkbox
-        label="lowercase (a-z)"
+        label="Lowercase (a-z)"
         onChange={checked =>
           setOptions({
             ...options,
@@ -68,7 +69,7 @@ function App() {
         }
       />
       <Checkbox
-        label="uppercase (A-Z)"
+        label="Uppercase (A-Z)"
         onChange={checked =>
           setOptions({
             ...options,
@@ -77,7 +78,7 @@ function App() {
         }
       />
       <Checkbox
-        label="numbers (0-9)"
+        label="Numbers (0-9)"
         onChange={checked =>
           setOptions({
             ...options,
@@ -86,13 +87,19 @@ function App() {
         }
       />
       <Checkbox
-        label="symbols (*!@%_#)"
+        label="Symbols (*!@%_#)"
         onChange={checked =>
           setOptions({
             ...options,
             alphabets: { ...options.alphabets, symbols: checked },
           })
         }
+      />
+      <h2>Options:</h2>
+      <Checkbox
+        label="Animation"
+        onChange={checked => setAnimationEnabled(checked)}
+        checked
       />
       <button
         className="button"
@@ -116,11 +123,15 @@ function App() {
       >
         Generate
       </button>
-      {shuffleValue ? (
+      {(animationEnabled && shuffleValue) || generatedPassword ? (
         <>
           <div className="card">
             <CopyButton onClick={() => copyToClipboard(generatedPassword)} />
-            {shuffleValue}
+            {animationEnabled && shuffleValue
+              ? shuffleValue
+              : generatedPassword
+              ? generatedPassword
+              : null}
           </div>
         </>
       ) : null}

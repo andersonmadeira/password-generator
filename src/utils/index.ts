@@ -3,14 +3,16 @@ const alphabetUppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 const alphabetNumbers = '0123456789'
 const alphabetSymbols = '!@#$%&*()_`´{[^~]};:/?<>,.=-+'
 
+export interface AlphabetOptions {
+  lowercase?: boolean
+  uppercase?: boolean
+  numbers?: boolean
+  symbols?: boolean
+}
+
 export interface GenerationOptions {
   length: number
-  alphabets?: {
-    lowercase?: boolean
-    uppercase?: boolean
-    numbers?: boolean
-    symbols?: boolean
-  }
+  alphabets?: AlphabetOptions
 }
 
 export function getRandomPassword(
@@ -28,6 +30,16 @@ export function getRandomPassword(
   }
 
   return result
+}
+
+export function getRandomChar(options: AlphabetOptions) {
+  const alphabet =
+    (options.lowercase ? alphabetLowercase : '') +
+    (options.uppercase ? alphabetUppercase : '') +
+    (options.numbers ? alphabetNumbers : '') +
+    (options.symbols ? alphabetSymbols : '')
+
+  return alphabet.charAt(Math.floor(Math.random() * alphabet.length))
 }
 
 export function copyToClipboard(text: string) {

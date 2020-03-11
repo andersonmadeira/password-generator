@@ -1,13 +1,48 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Checkbox from './components/Checkbox'
-import { getRandomPassword, GenerationOptions, copyToClipboard } from './utils'
+import {
+  getRandomPassword,
+  GenerationOptions,
+  copyToClipboard,
+  getRandomChar,
+} from './utils'
 import Slider from './components/Slider'
 import CopyButton from './components/CopyButton'
 
 function App() {
   const [generatedPassword, setGeneratedPassword] = useState('')
-  const initialOptions: GenerationOptions = { length: 20 }
-  const [options, setOptions] = useState(initialOptions)
+  const [shuffleValue, setShuffleValue] = useState('')
+  const [options, setOptions] = useState({
+    length: 20,
+    alphabets: {},
+  } as GenerationOptions)
+
+  useEffect(() => {
+    let charIndex = 0
+
+    if (generatedPassword) {
+      const shuffleInterval = setInterval(() => {
+        if (charIndex > generatedPassword.length) {
+          clearInterval(shuffleInterval)
+          return generatedPassword
+        }
+
+        const newSuffleValue = [...new Array(generatedPassword.length)]
+          .map((empty, i) =>
+            i < charIndex
+              ? generatedPassword[i]
+              : getRandomChar(options.alphabets || {}),
+          )
+          .join('')
+
+        setShuffleValue(newSuffleValue)
+
+        charIndex++
+      }, 40)
+
+      return () => clearInterval(shuffleInterval)
+    }
+  }, [generatedPassword, options])
 
   return (
     <div className="app-container">
@@ -81,11 +116,11 @@ function App() {
       >
         Generate
       </button>
-      {generatedPassword ? (
+      {shuffleValue ? (
         <>
           <div className="card">
             <CopyButton onClick={() => copyToClipboard(generatedPassword)} />
-            {generatedPassword}
+            {shuffleValue}
           </div>
         </>
       ) : null}

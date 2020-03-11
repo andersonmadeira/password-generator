@@ -47,7 +47,12 @@ function App() {
 
   return (
     <div className="app-container">
-      <h1>Password Generator</h1>
+      <h1>
+        <span role="img" aria-label="Key Icon">
+          🔑
+        </span>
+        &nbsp; Password Generator
+      </h1>
       <h2>Length: {options.length} </h2>
       <Slider
         value={options.length}
@@ -59,48 +64,58 @@ function App() {
         }
       />
       <h2>Characters:</h2>
-      <Checkbox
-        label="Lowercase (a-z)"
-        onChange={checked =>
-          setOptions({
-            ...options,
-            alphabets: { ...options.alphabets, lowercase: checked },
-          })
-        }
-      />
-      <Checkbox
-        label="Uppercase (A-Z)"
-        onChange={checked =>
-          setOptions({
-            ...options,
-            alphabets: { ...options.alphabets, uppercase: checked },
-          })
-        }
-      />
-      <Checkbox
-        label="Numbers (0-9)"
-        onChange={checked =>
-          setOptions({
-            ...options,
-            alphabets: { ...options.alphabets, numbers: checked },
-          })
-        }
-      />
-      <Checkbox
-        label="Symbols (*!@%_#)"
-        onChange={checked =>
-          setOptions({
-            ...options,
-            alphabets: { ...options.alphabets, symbols: checked },
-          })
-        }
-      />
+      <div className="input-group">
+        <Checkbox
+          label="Lowercase (a-z)"
+          onChange={checked =>
+            setOptions({
+              ...options,
+              alphabets: { ...options.alphabets, lowercase: checked },
+            })
+          }
+        />
+      </div>
+      <div className="input-group">
+        <Checkbox
+          label="Uppercase (A-Z)"
+          onChange={checked =>
+            setOptions({
+              ...options,
+              alphabets: { ...options.alphabets, uppercase: checked },
+            })
+          }
+        />
+      </div>
+      <div className="input-group">
+        <Checkbox
+          label="Numbers (0-9)"
+          onChange={checked =>
+            setOptions({
+              ...options,
+              alphabets: { ...options.alphabets, numbers: checked },
+            })
+          }
+        />
+      </div>
+      <div className="input-group">
+        <Checkbox
+          label="Symbols (*!@%_#)"
+          onChange={checked =>
+            setOptions({
+              ...options,
+              alphabets: { ...options.alphabets, symbols: checked },
+            })
+          }
+        />
+      </div>
       <h2>Options:</h2>
-      <Checkbox
-        label="Animation"
-        onChange={checked => setAnimationEnabled(checked)}
-        checked
-      />
+      <div className="input-group">
+        <Checkbox
+          label="Animation"
+          onChange={checked => setAnimationEnabled(checked)}
+          checked
+        />
+      </div>
       <button
         className="button"
         style={{ marginTop: 10 }}

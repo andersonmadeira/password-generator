@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Checkbox from './components/Checkbox'
 import {
   getRandomPassword,
@@ -12,9 +12,10 @@ import CopyButton from './components/CopyButton'
 function App() {
   const [generatedPassword, setGeneratedPassword] = useState('')
   const [shuffleValue, setShuffleValue] = useState('')
+  const [selectedLength, setSelectedLength] = useState(20)
   const [animationEnabled, setAnimationEnabled] = useState(true)
-  const [options, setOptions] = useState({
-    length: 20,
+  const options = useRef({
+    length: selectedLength,
     alphabets: {},
   } as GenerationOptions)
 
@@ -32,7 +33,7 @@ function App() {
           .map((empty, i) =>
             i < charIndex
               ? generatedPassword[i]
-              : getRandomChar(options.alphabets || {}),
+              : getRandomChar(options.current.alphabets || {}),
           )
           .join('')
 
@@ -43,7 +44,7 @@ function App() {
 
       return () => clearInterval(shuffleInterval)
     }
-  }, [generatedPassword, animationEnabled, options])
+  }, [generatedPassword, animationEnabled])
 
   return (
     <div className="app-container">
@@ -53,59 +54,34 @@ function App() {
         </span>
         &nbsp; Password Generator
       </h1>
-      <h2>Length: {options.length} </h2>
+      <h2>Length: {selectedLength} </h2>
       <Slider
-        value={options.length}
-        onChange={length =>
-          setOptions({
-            ...options,
-            length,
-          })
-        }
+        value={selectedLength}
+        onChange={length => setSelectedLength(length)}
       />
       <h2>Characters:</h2>
       <div className="input-group">
         <Checkbox
           label="Lowercase (a-z)"
-          onChange={checked =>
-            setOptions({
-              ...options,
-              alphabets: { ...options.alphabets, lowercase: checked },
-            })
-          }
+          onChange={checked => (options.current.alphabets.lowercase = checked)}
         />
       </div>
       <div className="input-group">
         <Checkbox
           label="Uppercase (A-Z)"
-          onChange={checked =>
-            setOptions({
-              ...options,
-              alphabets: { ...options.alphabets, uppercase: checked },
-            })
-          }
+          onChange={checked => (options.current.alphabets.uppercase = checked)}
         />
       </div>
       <div className="input-group">
         <Checkbox
           label="Numbers (0-9)"
-          onChange={checked =>
-            setOptions({
-              ...options,
-              alphabets: { ...options.alphabets, numbers: checked },
-            })
-          }
+          onChange={checked => (options.current.alphabets.numbers = checked)}
         />
       </div>
       <div className="input-group">
         <Checkbox
           label="Symbols (*!@%_#)"
-          onChange={checked =>
-            setOptions({
-              ...options,
-              alphabets: { ...options.alphabets, symbols: checked },
-            })
-          }
+          onChange={checked => (options.current.alphabets.symbols = checked)}
         />
       </div>
       <h2>Options:</h2>
@@ -122,10 +98,10 @@ function App() {
         type="submit"
         onClick={() => {
           if (
-            !options.alphabets?.lowercase &&
-            !options.alphabets?.uppercase &&
-            !options.alphabets?.numbers &&
-            !options.alphabets?.symbols
+            !options.current.alphabets.lowercase &&
+            !options.current.alphabets.uppercase &&
+            !options.current.alphabets.numbers &&
+            !options.current.alphabets.symbols
           ) {
             alert(
               'Please select at least one set of characters to generate the password!',
@@ -133,7 +109,8 @@ function App() {
             return
           }
 
-          setGeneratedPassword(getRandomPassword(options))
+          options.current.length = selectedLength
+          setGeneratedPassword(getRandomPassword(options.current))
         }}
       >
         Generate

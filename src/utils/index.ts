@@ -12,17 +12,17 @@ export interface AlphabetOptions {
 
 export interface GenerationOptions {
   length: number
-  alphabets?: AlphabetOptions
+  alphabets: AlphabetOptions
 }
 
 export function getRandomPassword(
-  options: GenerationOptions = { length: 5 },
+  options: GenerationOptions = { length: 5, alphabets: {} },
 ): string {
   const alphabet =
-    (options.alphabets?.lowercase ? alphabetLowercase : '') +
-    (options.alphabets?.uppercase ? alphabetUppercase : '') +
-    (options.alphabets?.numbers ? alphabetNumbers : '') +
-    (options.alphabets?.symbols ? alphabetSymbols : '')
+    (options.alphabets.lowercase ? alphabetLowercase : '') +
+    (options.alphabets.uppercase ? alphabetUppercase : '') +
+    (options.alphabets.numbers ? alphabetNumbers : '') +
+    (options.alphabets.symbols ? alphabetSymbols : '')
   let result = ''
 
   for (let i = 0; i < options.length; i++) {

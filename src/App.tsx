@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Checkbox from './components/Checkbox'
-import {
-  getRandomPassword,
-  GenerationOptions,
-  copyToClipboard,
-  getRandomChar,
-} from './utils'
+import { getRandomPassword, GenerationOptions, getRandomChar } from './utils'
 import Slider from './components/Slider'
 import CopyButton from './components/CopyButton'
 
@@ -14,10 +9,10 @@ function App() {
   const [shuffleValue, setShuffleValue] = useState('')
   const [selectedLength, setSelectedLength] = useState(20)
   const [animationEnabled, setAnimationEnabled] = useState(true)
-  const options = useRef({
+  const options = useRef<GenerationOptions>({
     length: selectedLength,
     alphabets: {},
-  } as GenerationOptions)
+  })
 
   useEffect(() => {
     let charIndex = 0
@@ -94,7 +89,6 @@ function App() {
       </div>
       <button
         className="button"
-        style={{ marginTop: 10 }}
         type="submit"
         onClick={() => {
           if (
@@ -118,7 +112,7 @@ function App() {
       {(animationEnabled && shuffleValue) || generatedPassword ? (
         <>
           <div className="card">
-            <CopyButton onClick={() => copyToClipboard(generatedPassword)} />
+            <CopyButton text={generatedPassword} />
             {animationEnabled && shuffleValue
               ? shuffleValue
               : generatedPassword

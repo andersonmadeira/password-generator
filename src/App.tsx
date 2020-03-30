@@ -16,19 +16,23 @@ function App() {
 
   useEffect(() => {
     let charIndex = 0
+    const generationOptions: GenerationOptions = {
+      ...options.current,
+      alphabets: { ...options.current.alphabets },
+    }
 
     if (generatedPassword && animationEnabled) {
       const shuffleInterval = setInterval(() => {
         if (charIndex > generatedPassword.length) {
           clearInterval(shuffleInterval)
-          return generatedPassword
+          return
         }
 
         const newSuffleValue = [...new Array(generatedPassword.length)]
           .map((empty, i) =>
             i < charIndex
               ? generatedPassword[i]
-              : getRandomChar(options.current.alphabets || {}),
+              : getRandomChar(generationOptions.alphabets || {}),
           )
           .join('')
 

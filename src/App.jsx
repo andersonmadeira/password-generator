@@ -7,19 +7,13 @@ import CopyButton from './components/CopyButton'
 function App() {
   const [generatedPassword, setGeneratedPassword] = useState('')
   const [shuffleValue, setShuffleValue] = useState('')
-  const [selectedLength, setSelectedLength] = useState(20)
+  const [length, setLength] = useState(20)
   const [animationEnabled, setAnimationEnabled] = useState(true)
-  const options = useRef({
-    length: selectedLength,
-    alphabets: {},
-  })
+  const alphabets = useRef({})
 
   useEffect(() => {
     let charIndex = 0
-    const generationOptions = {
-      ...options.current,
-      alphabets: { ...options.current.alphabets },
-    }
+    const selectedAlphabets = { ...alphabets.current }
 
     if (generatedPassword && animationEnabled) {
       const shuffleInterval = setInterval(() => {
@@ -32,7 +26,7 @@ function App() {
           .map((empty, i) =>
             i < charIndex
               ? generatedPassword[i]
-              : getRandomChar(generationOptions.alphabets || {}),
+              : getRandomChar(selectedAlphabets || {}),
           )
           .join('')
 
@@ -53,34 +47,34 @@ function App() {
         </span>
         &nbsp; Password Generator
       </h1>
-      <h2>Length: {selectedLength} </h2>
+      <h2>Length: {length} </h2>
       <Slider
-        value={selectedLength}
-        onChange={length => setSelectedLength(length)}
+        value={length}
+        onChange={length => setLength(length)}
       />
       <h2>Characters:</h2>
       <div className="input-group">
         <Checkbox
           label="Lowercase (a-z)"
-          onChange={checked => (options.current.alphabets.lowercase = checked)}
+          onChange={checked => (alphabets.current.lowercase = checked)}
         />
       </div>
       <div className="input-group">
         <Checkbox
           label="Uppercase (A-Z)"
-          onChange={checked => (options.current.alphabets.uppercase = checked)}
+          onChange={checked => (alphabets.current.uppercase = checked)}
         />
       </div>
       <div className="input-group">
         <Checkbox
           label="Numbers (0-9)"
-          onChange={checked => (options.current.alphabets.numbers = checked)}
+          onChange={checked => (alphabets.current.numbers = checked)}
         />
       </div>
       <div className="input-group">
         <Checkbox
           label="Symbols (*!@%_#)"
-          onChange={checked => (options.current.alphabets.symbols = checked)}
+          onChange={checked => (alphabets.current.symbols = checked)}
         />
       </div>
       <h2>Options:</h2>
@@ -96,10 +90,10 @@ function App() {
         type="submit"
         onClick={() => {
           if (
-            !options.current.alphabets.lowercase &&
-            !options.current.alphabets.uppercase &&
-            !options.current.alphabets.numbers &&
-            !options.current.alphabets.symbols
+            !alphabets.current.lowercase &&
+            !alphabets.current.uppercase &&
+            !alphabets.current.numbers &&
+            !alphabets.current.symbols
           ) {
             alert(
               'Please select at least one set of characters to generate the password!',
@@ -107,8 +101,7 @@ function App() {
             return
           }
 
-          options.current.length = selectedLength
-          setGeneratedPassword(getRandomPassword(options.current))
+          setGeneratedPassword(getRandomPassword(alphabets.current, length))
         }}
       >
         Generate

@@ -4,28 +4,28 @@ const alphabetNumbers = '0123456789'
 const alphabetSymbols = '!@#$%&*()_`´{[^~]};:/?<>,.=-+'
 
 export function getRandomPassword(
-  options = { length: 5, alphabets: {} },
+  alphabets = {}, length,
 ) {
   const alphabet =
-    (options.alphabets.lowercase ? alphabetLowercase : '') +
-    (options.alphabets.uppercase ? alphabetUppercase : '') +
-    (options.alphabets.numbers ? alphabetNumbers : '') +
-    (options.alphabets.symbols ? alphabetSymbols : '')
+    (alphabets.lowercase ? alphabetLowercase : '') +
+    (alphabets.uppercase ? alphabetUppercase : '') +
+    (alphabets.numbers ? alphabetNumbers : '') +
+    (alphabets.symbols ? alphabetSymbols : '')
   let result = ''
 
-  for (let i = 0; i < options.length; i++) {
+  for (let i = 0; i < length; i++) {
     result += alphabet.charAt(Math.floor(Math.random() * alphabet.length))
   }
 
   return result
 }
 
-export function getRandomChar(options) {
+export function getRandomChar(alphabets) {
   const alphabet =
-    (options.lowercase ? alphabetLowercase : '') +
-    (options.uppercase ? alphabetUppercase : '') +
-    (options.numbers ? alphabetNumbers : '') +
-    (options.symbols ? alphabetSymbols : '')
+    (alphabets.lowercase ? alphabetLowercase : '') +
+    (alphabets.uppercase ? alphabetUppercase : '') +
+    (alphabets.numbers ? alphabetNumbers : '') +
+    (alphabets.symbols ? alphabetSymbols : '')
 
   return alphabet.charAt(Math.floor(Math.random() * alphabet.length))
 }

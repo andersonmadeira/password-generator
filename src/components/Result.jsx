@@ -1,16 +1,12 @@
 import React from 'react'
 import CopyButton from './CopyButton'
 
-const Result = ({ animationEnabled, shuffledText, text }) => {
-  return (animationEnabled && shuffledText) || text ? (
+const Result = ({text, displayText }) => {
+  return displayText ? (
     <>
       <div className="card">
         <CopyButton text={text} />
-        {animationEnabled && shuffledText
-          ? shuffledText
-          : text
-          ? text
-          : null}
+        {displayText}
       </div>
     </>
   ) : null

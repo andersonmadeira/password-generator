@@ -104,9 +104,8 @@ function App() {
         Generate
       </button>
       <Result
-        animationEnabled={animationEnabled}
-        shuffledText={shuffledPassword}
         text={password}
+        displayText={animationEnabled ? shuffledPassword : password}
       />
     </div>
   )

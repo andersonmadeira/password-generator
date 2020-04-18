@@ -2,11 +2,11 @@ import React, { useState, useEffect, useRef } from 'react'
 import Checkbox from './components/Checkbox'
 import { getRandomPassword, getRandomChar } from './utils'
 import Slider from './components/Slider'
-import CopyButton from './components/CopyButton'
+import Result from './components/Result'
 
 function App() {
-  const [generatedPassword, setGeneratedPassword] = useState('')
-  const [shuffleValue, setShuffleValue] = useState('')
+  const [password, setPassword] = useState('')
+  const [shuffledPassword, setShuffledPassword] = useState('')
   const [length, setLength] = useState(20)
   const [animationEnabled, setAnimationEnabled] = useState(true)
   const alphabets = useRef({})
@@ -15,29 +15,29 @@ function App() {
     let charIndex = 0
     const selectedAlphabets = { ...alphabets.current }
 
-    if (generatedPassword && animationEnabled) {
+    if (password && animationEnabled) {
       const shuffleInterval = setInterval(() => {
-        if (charIndex > generatedPassword.length) {
+        if (charIndex > password.length) {
           clearInterval(shuffleInterval)
           return
         }
 
-        const newSuffleValue = [...new Array(generatedPassword.length)]
+        const newSufflePassword = [...new Array(password.length)]
           .map((empty, i) =>
             i < charIndex
-              ? generatedPassword[i]
+              ? password[i]
               : getRandomChar(selectedAlphabets || {}),
           )
           .join('')
 
-        setShuffleValue(newSuffleValue)
+        setShuffledPassword(newSufflePassword)
 
         charIndex++
       }, 30)
 
       return () => clearInterval(shuffleInterval)
     }
-  }, [generatedPassword, animationEnabled])
+  }, [password, animationEnabled])
 
   return (
     <div className="app-container">
@@ -48,40 +48,37 @@ function App() {
         &nbsp; Password Generator
       </h1>
       <h2>Length: {length} </h2>
-      <Slider
-        value={length}
-        onChange={length => setLength(length)}
-      />
+      <Slider value={length} onChange={(length) => setLength(length)} />
       <h2>Characters:</h2>
       <div className="input-group">
         <Checkbox
           label="Lowercase (a-z)"
-          onChange={checked => (alphabets.current.lowercase = checked)}
+          onChange={(checked) => (alphabets.current.lowercase = checked)}
         />
       </div>
       <div className="input-group">
         <Checkbox
           label="Uppercase (A-Z)"
-          onChange={checked => (alphabets.current.uppercase = checked)}
+          onChange={(checked) => (alphabets.current.uppercase = checked)}
         />
       </div>
       <div className="input-group">
         <Checkbox
           label="Numbers (0-9)"
-          onChange={checked => (alphabets.current.numbers = checked)}
+          onChange={(checked) => (alphabets.current.numbers = checked)}
         />
       </div>
       <div className="input-group">
         <Checkbox
           label="Symbols (*!@%_#)"
-          onChange={checked => (alphabets.current.symbols = checked)}
+          onChange={(checked) => (alphabets.current.symbols = checked)}
         />
       </div>
       <h2>Options:</h2>
       <div className="input-group">
         <Checkbox
           label="Animation"
-          onChange={checked => setAnimationEnabled(checked)}
+          onChange={(checked) => setAnimationEnabled(checked)}
           checked
         />
       </div>
@@ -101,23 +98,16 @@ function App() {
             return
           }
 
-          setGeneratedPassword(getRandomPassword(alphabets.current, length))
+          setPassword(getRandomPassword(alphabets.current, length))
         }}
       >
         Generate
       </button>
-      {(animationEnabled && shuffleValue) || generatedPassword ? (
-        <>
-          <div className="card">
-            <CopyButton text={generatedPassword} />
-            {animationEnabled && shuffleValue
-              ? shuffleValue
-              : generatedPassword
-              ? generatedPassword
-              : null}
-          </div>
-        </>
-      ) : null}
+      <Result
+        animationEnabled={animationEnabled}
+        shuffledText={shuffledPassword}
+        text={password}
+      />
     </div>
   )
 }

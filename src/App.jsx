@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Checkbox from './components/Checkbox'
-import { getRandomPassword, GenerationOptions, getRandomChar } from './utils'
+import { getRandomPassword, getRandomChar } from './utils'
 import Slider from './components/Slider'
 import CopyButton from './components/CopyButton'
 
@@ -9,14 +9,14 @@ function App() {
   const [shuffleValue, setShuffleValue] = useState('')
   const [selectedLength, setSelectedLength] = useState(20)
   const [animationEnabled, setAnimationEnabled] = useState(true)
-  const options = useRef<GenerationOptions>({
+  const options = useRef({
     length: selectedLength,
     alphabets: {},
   })
 
   useEffect(() => {
     let charIndex = 0
-    const generationOptions: GenerationOptions = {
+    const generationOptions = {
       ...options.current,
       alphabets: { ...options.current.alphabets },
     }

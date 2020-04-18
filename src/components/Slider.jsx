@@ -1,13 +1,6 @@
 import React, { useState } from 'react'
 
-interface Props {
-  min?: number
-  max?: number
-  value?: number
-  onChange?: (value: number) => void
-}
-
-const Slider: React.FC<Props> = ({
+const Slider = ({
   min = 1,
   max = 250,
   value = 25,

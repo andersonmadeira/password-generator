@@ -1,12 +1,7 @@
 import React from 'react'
 import { copyToClipboard } from '../utils'
 
-interface Props {
-  text: string
-  label?: string
-}
-
-const CopyButton: React.FC<Props> = ({ text, label = 'copy' }) => {
+const CopyButton = ({ text, label = 'copy' }) => {
   return (
     <button className="copy-button" onClick={() => copyToClipboard(text)}>
       <svg className="svg-icon copy-button__icon" viewBox="0 0 20 20">

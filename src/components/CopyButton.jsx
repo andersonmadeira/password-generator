@@ -14,4 +14,4 @@ const CopyButton = ({ text, label = 'copy' }) => {
   )
 }
 
-export default CopyButton
+export default React.memo(CopyButton)

@@ -19,4 +19,4 @@ const Checkbox = ({ label, checked = false, onChange }) => {
   )
 }
 
-export default Checkbox
+export default React.memo(Checkbox)

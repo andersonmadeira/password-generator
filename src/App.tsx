@@ -1,15 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react'
-import Checkbox from './components/Checkbox'
-import { getRandomPassword, getRandomChar } from './utils'
-import Slider from './components/Slider'
-import Result from './components/Result'
 
-function App() {
+import { getRandomPassword, getRandomChar } from './utils'
+import { Slider, Checkbox, Result } from './components'
+import { OptionsType } from './types'
+
+const App: React.FC = () => {
   const [password, setPassword] = useState('')
   const [shuffledPassword, setShuffledPassword] = useState('')
   const [length, setLength] = useState(20)
   const [animationEnabled, setAnimationEnabled] = useState(true)
-  const alphabets = useRef({})
+  const alphabets = useRef<OptionsType>({
+    lowercase: false,
+    uppercase: false,
+    numbers: false,
+    symbols: false,
+  })
 
   useEffect(() => {
     let charIndex = 0
@@ -48,37 +53,41 @@ function App() {
         &nbsp; Password Generator
       </h1>
       <h2>Length: {length} </h2>
-      <Slider value={length} onChange={(length) => setLength(length)} />
+      <Slider value={length} onChange={(length: number) => setLength(length)} />
       <h2>Characters:</h2>
       <div className="input-group">
         <Checkbox
           label="Lowercase (a-z)"
-          onChange={(checked) => (alphabets.current.lowercase = checked)}
+          onChange={(checked: boolean) =>
+            (alphabets.current.lowercase = checked)
+          }
         />
       </div>
       <div className="input-group">
         <Checkbox
           label="Uppercase (A-Z)"
-          onChange={(checked) => (alphabets.current.uppercase = checked)}
+          onChange={(checked: boolean) =>
+            (alphabets.current.uppercase = checked)
+          }
         />
       </div>
       <div className="input-group">
         <Checkbox
           label="Numbers (0-9)"
-          onChange={(checked) => (alphabets.current.numbers = checked)}
+          onChange={(checked: boolean) => (alphabets.current.numbers = checked)}
         />
       </div>
       <div className="input-group">
         <Checkbox
           label="Symbols (*!@%_#)"
-          onChange={(checked) => (alphabets.current.symbols = checked)}
+          onChange={(checked: boolean) => (alphabets.current.symbols = checked)}
         />
       </div>
       <h2>Options:</h2>
       <div className="input-group">
         <Checkbox
           label="Animation"
-          onChange={(checked) => setAnimationEnabled(checked)}
+          onChange={(checked: boolean) => setAnimationEnabled(checked)}
           checked
         />
       </div>

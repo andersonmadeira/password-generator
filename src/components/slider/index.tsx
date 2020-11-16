@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 
-const Slider = ({
+import { SliderProps } from './types'
+
+export const Slider: React.FC<SliderProps> = ({
   min = 1,
   max = 250,
   value = 25,
@@ -16,7 +18,7 @@ const Slider = ({
       max={max}
       step="1"
       value={val}
-      onChange={event => {
+      onChange={(event) => {
         const newValue = +event.target.value
         setVal(newValue)
         if (onChange) onChange(newValue)
@@ -24,5 +26,7 @@ const Slider = ({
     />
   )
 }
+
+export * from './types'
 
 export default React.memo(Slider)

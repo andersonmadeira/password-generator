@@ -3,9 +3,7 @@ const alphabetUppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 const alphabetNumbers = '0123456789'
 const alphabetSymbols = '!@#$%&*()_`´{[^~]};:/?<>,.=-+'
 
-export function getRandomPassword(
-  alphabets = {}, length,
-) {
+export function getRandomPassword(alphabets = {}, length) {
   const alphabet =
     (alphabets.lowercase ? alphabetLowercase : '') +
     (alphabets.uppercase ? alphabetUppercase : '') +

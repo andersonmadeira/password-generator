@@ -1,4 +1,6 @@
-.slider {
+import styled from '@emotion/styled'
+
+export const SliderStyled = styled.input`
   -webkit-appearance: none;
   width: 100%;
   height: 8px;
@@ -24,14 +26,12 @@
     border-color: #afafaf;
     border-style: solid;
     cursor: pointer;
-    transition: 
-      border-width 200ms ease-in-out,
-      border-color 200ms ease-in-out;
+    transition: border-width 200ms ease-in-out, border-color 200ms ease-in-out;
   }
 
   &::-webkit-slider-thumb:hover {
     border-width: 4px;
-    border-color: $main-bg-color;
+    border-color: ${props => props.theme.colors.primary};
   }
 
   &::-moz-range-thumb {
@@ -43,13 +43,11 @@
     border-color: #afafaf;
     border-style: solid;
     cursor: pointer;
-    transition: 
-      border-width 200ms ease-in-out,
-      border-color 200ms ease-in-out;
+    transition: border-width 200ms ease-in-out, border-color 200ms ease-in-out;
   }
 
   &::-moz-range-thumb:hover {
     border-width: 4px;
-    border-color: $main-bg-color;
+    border-color: ${props => props.theme.colors.primary};
   }
-}
+`

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import { SliderStyled } from './styles'
 import { SliderProps } from './types'
 
 export const Slider: React.FC<SliderProps> = ({
@@ -11,14 +12,13 @@ export const Slider: React.FC<SliderProps> = ({
   const [val, setVal] = useState(value)
 
   return (
-    <input
-      className="slider"
+    <SliderStyled
       type="range"
       min={min}
       max={max}
       step="1"
       value={val}
-      onChange={(event) => {
+      onChange={event => {
         const newValue = +event.target.value
         setVal(newValue)
         if (onChange) onChange(newValue)

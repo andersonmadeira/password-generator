@@ -1,4 +1,6 @@
-.copy-button {
+import styled from '@emotion/styled'
+
+export const CopyButtonStyled = styled.button`
   position: absolute;
   top: 8px;
   left: 8px;
@@ -20,4 +22,21 @@
   &:hover {
     opacity: 0.7;
   }
-}
+`
+
+export const SvgIcon = styled.svg`
+  width: 1em;
+  height: 1em;
+  margin-right: 0.4em;
+
+  path,
+  polygon,
+  rect {
+    fill: ${props => props.theme.colors.primary};
+  }
+
+  circle {
+    stroke: ${props => props.theme.colors.primary};
+    stroke-width: 1;
+  }
+`

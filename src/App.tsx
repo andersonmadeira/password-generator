@@ -1,8 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react'
 
 import { getRandomPassword, getRandomChar } from './utils'
-import { Slider, Checkbox, Result } from './components'
+import { Slider, Checkbox, Result, Button } from './components'
 import { OptionsType } from './types'
+import styled from '@emotion/styled'
+
+export const InputGroup = styled.div`
+  display: block;
+`
+
+export const Container = styled.div`
+  max-width: 550px;
+  margin: 0 auto;
+  padding: 0 20px 20px 20px;
+`
 
 const App: React.FC = () => {
   const [password, setPassword] = useState('')
@@ -45,7 +56,7 @@ const App: React.FC = () => {
   }, [password, animationEnabled])
 
   return (
-    <div className="app-container">
+    <Container>
       <h1>
         <span role="img" aria-label="Key Icon">
           🔑
@@ -55,44 +66,43 @@ const App: React.FC = () => {
       <h2>Length: {length} </h2>
       <Slider value={length} onChange={(length: number) => setLength(length)} />
       <h2>Characters:</h2>
-      <div className="input-group">
+      <InputGroup>
         <Checkbox
           label="Lowercase (a-z)"
           onChange={(checked: boolean) =>
             (alphabets.current.lowercase = checked)
           }
         />
-      </div>
-      <div className="input-group">
+      </InputGroup>
+      <InputGroup>
         <Checkbox
           label="Uppercase (A-Z)"
           onChange={(checked: boolean) =>
             (alphabets.current.uppercase = checked)
           }
         />
-      </div>
-      <div className="input-group">
+      </InputGroup>
+      <InputGroup>
         <Checkbox
           label="Numbers (0-9)"
           onChange={(checked: boolean) => (alphabets.current.numbers = checked)}
         />
-      </div>
-      <div className="input-group">
+      </InputGroup>
+      <InputGroup>
         <Checkbox
           label="Symbols (*!@%_#)"
           onChange={(checked: boolean) => (alphabets.current.symbols = checked)}
         />
-      </div>
+      </InputGroup>
       <h2>Options:</h2>
-      <div className="input-group">
+      <InputGroup>
         <Checkbox
           label="Animation"
           onChange={(checked: boolean) => setAnimationEnabled(checked)}
           checked
         />
-      </div>
-      <button
-        className="button"
+      </InputGroup>
+      <Button
         type="submit"
         onClick={() => {
           if (
@@ -111,12 +121,12 @@ const App: React.FC = () => {
         }}
       >
         Generate
-      </button>
+      </Button>
       <Result
         text={password}
         displayText={animationEnabled ? shuffledPassword : password}
       />
-    </div>
+    </Container>
   )
 }
 

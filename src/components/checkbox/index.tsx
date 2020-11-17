@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import { CheckboxLabel } from './styles'
 import { CheckboxProps } from './types'
 
 const Checkbox: React.FC<CheckboxProps> = ({
@@ -10,7 +11,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
   const [isChecked, setIsChecked] = useState(checked)
 
   return (
-    <label className="checkbox">
+    <CheckboxLabel>
       {label}
       <input
         type="checkbox"
@@ -22,7 +23,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
         }}
       />
       <span className="checkbox__checkmark"></span>
-    </label>
+    </CheckboxLabel>
   )
 }
 

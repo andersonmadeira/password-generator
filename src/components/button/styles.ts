@@ -1,4 +1,6 @@
-.button {
+import styled from '@emotion/styled'
+
+export const Button = styled.button`
   font-size: 1.2em;
 
   color: #fff;
@@ -12,8 +14,8 @@
   display: inline-block;
 
   box-shadow: 0 6px 16px 0 rgba(67, 184, 201, 0.2);
-  background: $main-bg-color;
-  border-color: $main-bg-color;
+  background: ${props => props.theme.colors.primary};
+  border-color: ${props => props.theme.colors.primary};
 
   outline: none;
   cursor: pointer;
@@ -21,6 +23,6 @@
   transition: all 0.5s ease;
 
   &:hover {
-    background: $main-hover-color;
+    background: ${props => props.theme.colors.primaryDark};
   }
-}
+`

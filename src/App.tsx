@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-import { getRandomPassword, getRandomChar } from './utils'
+import { getRandomPassword, getRandomChar, GenerationOptions } from './utils'
 import { Slider, Checkbox, Result, Button } from './components'
-import { OptionsType } from './types'
 import styled from '@emotion/styled'
 
 export const InputGroup = styled.div`
@@ -20,12 +19,7 @@ const App: React.FC = () => {
   const [shuffledPassword, setShuffledPassword] = useState('')
   const [length, setLength] = useState(20)
   const [animationEnabled, setAnimationEnabled] = useState(true)
-  const alphabets = useRef<OptionsType>({
-    lowercase: false,
-    uppercase: false,
-    numbers: false,
-    symbols: false,
-  })
+  const alphabets = useRef<GenerationOptions>()
 
   useEffect(() => {
     let charIndex = 0

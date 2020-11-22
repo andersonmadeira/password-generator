@@ -1,19 +1,35 @@
 import React, { useState, useEffect, useRef } from 'react'
-import Checkbox from './components/Checkbox'
-import { getRandomPassword, getRandomChar } from './utils'
-import Slider from './components/Slider'
-import Result from './components/Result'
+import styled from '@emotion/styled'
 
-function App() {
+import { getRandomPassword, getRandomChar, GenerationOptions } from './utils'
+import { Slider, Checkbox, Result, Button } from './components'
+
+export const InputGroup = styled.div`
+  display: block;
+`
+
+export const Container = styled.div`
+  max-width: 550px;
+  margin: 0 auto;
+  padding: 0 20px 20px 20px;
+`
+
+const App: React.FC = () => {
   const [password, setPassword] = useState('')
   const [shuffledPassword, setShuffledPassword] = useState('')
   const [length, setLength] = useState(20)
   const [animationEnabled, setAnimationEnabled] = useState(true)
-  const alphabets = useRef({})
+  const options = useRef<GenerationOptions>({
+    lowercase: false,
+    uppercase: false,
+    numeric: false,
+    symbols: false,
+    length: 20,
+  })
 
   useEffect(() => {
     let charIndex = 0
-    const selectedAlphabets = { ...alphabets.current }
+    const selectedAlphabets = { ...options.current }
 
     if (password && animationEnabled) {
       const shuffleInterval = setInterval(() => {
@@ -40,7 +56,7 @@ function App() {
   }, [password, animationEnabled])
 
   return (
-    <div className="app-container">
+    <Container>
       <h1>
         <span role="img" aria-label="Key Icon">
           🔑
@@ -48,49 +64,53 @@ function App() {
         &nbsp; Password Generator
       </h1>
       <h2>Length: {length} </h2>
-      <Slider value={length} onChange={(length) => setLength(length)} />
+      <Slider
+        value={length}
+        onChange={(length: number) =>
+          setLength((options.current.length = length))
+        }
+      />
       <h2>Characters:</h2>
-      <div className="input-group">
+      <InputGroup>
         <Checkbox
           label="Lowercase (a-z)"
-          onChange={(checked) => (alphabets.current.lowercase = checked)}
+          onChange={(checked: boolean) => (options.current.lowercase = checked)}
         />
-      </div>
-      <div className="input-group">
+      </InputGroup>
+      <InputGroup>
         <Checkbox
           label="Uppercase (A-Z)"
-          onChange={(checked) => (alphabets.current.uppercase = checked)}
+          onChange={(checked: boolean) => (options.current.uppercase = checked)}
         />
-      </div>
-      <div className="input-group">
+      </InputGroup>
+      <InputGroup>
         <Checkbox
           label="Numbers (0-9)"
-          onChange={(checked) => (alphabets.current.numbers = checked)}
+          onChange={(checked: boolean) => (options.current.numeric = checked)}
         />
-      </div>
-      <div className="input-group">
+      </InputGroup>
+      <InputGroup>
         <Checkbox
           label="Symbols (*!@%_#)"
-          onChange={(checked) => (alphabets.current.symbols = checked)}
+          onChange={(checked: boolean) => (options.current.symbols = checked)}
         />
-      </div>
+      </InputGroup>
       <h2>Options:</h2>
-      <div className="input-group">
+      <InputGroup>
         <Checkbox
           label="Animation"
-          onChange={(checked) => setAnimationEnabled(checked)}
+          onChange={(checked: boolean) => setAnimationEnabled(checked)}
           checked
         />
-      </div>
-      <button
-        className="button"
+      </InputGroup>
+      <Button
         type="submit"
         onClick={() => {
           if (
-            !alphabets.current.lowercase &&
-            !alphabets.current.uppercase &&
-            !alphabets.current.numbers &&
-            !alphabets.current.symbols
+            !options.current.lowercase &&
+            !options.current.uppercase &&
+            !options.current.numeric &&
+            !options.current.symbols
           ) {
             alert(
               'Please select at least one set of characters to generate the password!',
@@ -98,16 +118,16 @@ function App() {
             return
           }
 
-          setPassword(getRandomPassword(alphabets.current, length))
+          setPassword(getRandomPassword(options.current))
         }}
       >
         Generate
-      </button>
+      </Button>
       <Result
         text={password}
         displayText={animationEnabled ? shuffledPassword : password}
       />
-    </div>
+    </Container>
   )
 }
 

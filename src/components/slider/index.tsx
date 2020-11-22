@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 
-const Slider = ({
+import { SliderStyled } from './styles'
+import { SliderProps } from './types'
+
+export const Slider: React.FC<SliderProps> = ({
   min = 1,
   max = 250,
   value = 25,
@@ -9,8 +12,7 @@ const Slider = ({
   const [val, setVal] = useState(value)
 
   return (
-    <input
-      className="slider"
+    <SliderStyled
       type="range"
       min={min}
       max={max}
@@ -24,5 +26,7 @@ const Slider = ({
     />
   )
 }
+
+export * from './types'
 
 export default React.memo(Slider)

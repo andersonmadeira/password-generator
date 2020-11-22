@@ -1,9 +1,17 @@
 import React, { useState } from 'react'
 
-const Checkbox = ({ label, checked = false, onChange }) => {
+import { CheckboxLabel } from './styles'
+import { CheckboxProps } from './types'
+
+const Checkbox: React.FC<CheckboxProps> = ({
+  label,
+  checked = false,
+  onChange,
+}) => {
   const [isChecked, setIsChecked] = useState(checked)
+
   return (
-    <label className="checkbox">
+    <CheckboxLabel>
       {label}
       <input
         type="checkbox"
@@ -15,8 +23,10 @@ const Checkbox = ({ label, checked = false, onChange }) => {
         }}
       />
       <span className="checkbox__checkmark"></span>
-    </label>
+    </CheckboxLabel>
   )
 }
+
+export * from './types'
 
 export default React.memo(Checkbox)

@@ -10,7 +10,7 @@ export type GenerationOptions = {
   uppercase?: boolean
   numeric?: boolean
   symbols?: boolean
-  length?: number
+  length: number
 }
 
 export function getRandomPassword(options: GenerationOptions): string {
@@ -21,9 +21,11 @@ export function getRandomPassword(options: GenerationOptions): string {
     (options.symbols ? Alphabets.Symbols : '')
   let result = ''
 
-  for (let i = 0; i < length; i++) {
+  for (let i = 0; i < options.length; i++) {
     result += alphabet.charAt(Math.floor(Math.random() * alphabet.length))
   }
+
+  console.log('Result: ', result)
 
   return result
 }

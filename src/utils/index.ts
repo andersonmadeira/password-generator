@@ -6,19 +6,16 @@ export enum Alphabets {
 }
 
 export type GenerationOptions = {
-  lowercase?: boolean
-  uppercase?: boolean
-  numeric?: boolean
-  symbols?: boolean
+  alphabets: Alphabets[]
   length: number
+  animation: boolean
 }
 
+export const combineAlphabets = (alphabets: Alphabets[]): string =>
+  alphabets.reduce((acc, alphabet) => acc + alphabet, '')
+
 export function getRandomPassword(options: GenerationOptions): string {
-  const alphabet =
-    (options.lowercase ? Alphabets.Lowercase : '') +
-    (options.uppercase ? Alphabets.Uppercase : '') +
-    (options.numeric ? Alphabets.Numeric : '') +
-    (options.symbols ? Alphabets.Symbols : '')
+  const alphabet = combineAlphabets(options.alphabets)
   let result = ''
 
   for (let i = 0; i < options.length; i++) {
@@ -30,15 +27,8 @@ export function getRandomPassword(options: GenerationOptions): string {
   return result
 }
 
-export function getRandomChar(options: GenerationOptions): string {
-  const alphabet =
-    (options.lowercase ? Alphabets.Lowercase : '') +
-    (options.uppercase ? Alphabets.Uppercase : '') +
-    (options.numeric ? Alphabets.Numeric : '') +
-    (options.symbols ? Alphabets.Symbols : '')
-
-  return alphabet.charAt(Math.floor(Math.random() * alphabet.length))
-}
+export const getRandomChar = (alphabet: string): string =>
+  alphabet.charAt(Math.floor(Math.random() * alphabet.length))
 
 export function copyToClipboard(text: string): void {
   const inputElem = document.createElement('input')

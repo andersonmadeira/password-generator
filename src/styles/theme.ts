@@ -5,5 +5,6 @@ export const theme: Theme = {
     primary: '#27A4CE',
     primaryLight: '#f8fbfc',
     primaryDark: '#53C0E4',
+    disabled: '#808080',
   },
 }

@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { ThemeProvider } from '@emotion/react'
 
-import App from './App'
+import App from './app'
 import { GlobalStyles, theme } from './styles'
 import reportWebVitals from './reportWebVitals'
 

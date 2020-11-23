@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import {
   getRandomPassword,
   getRandomChar,
   GenerationOptions,
   Alphabets,
+  combineAlphabets,
 } from '../utils'
 import { Slider, Checkbox, Result, Button } from '../components'
 import { Container, InputGroup } from './styles'
@@ -12,18 +13,17 @@ import { Container, InputGroup } from './styles'
 const App: React.FC = () => {
   const [password, setPassword] = useState('')
   const [shuffledPassword, setShuffledPassword] = useState('')
-  const [length, setLength] = useState(20)
-  const [animationEnabled, setAnimationEnabled] = useState(true)
-  const options = useRef<GenerationOptions>({
+  const [options, setOptions] = useState<GenerationOptions>({
     alphabets: [],
     length: 20,
+    animation: true,
   })
 
   useEffect(() => {
     let charIndex = 0
-    const selectedAlphabets = { ...options.current }
+    const alphabet = combineAlphabets(options.alphabets)
 
-    if (password && animationEnabled) {
+    if (password && options.animation) {
       const shuffleInterval = setInterval(() => {
         if (charIndex > password.length) {
           clearInterval(shuffleInterval)
@@ -32,9 +32,7 @@ const App: React.FC = () => {
 
         const newSufflePassword = [...new Array(password.length)]
           .map((empty, i) =>
-            i < charIndex
-              ? password[i]
-              : getRandomChar(selectedAlphabets || {}),
+            i < charIndex ? password[i] : getRandomChar(alphabet),
           )
           .join('')
 
@@ -45,7 +43,7 @@ const App: React.FC = () => {
 
       return () => clearInterval(shuffleInterval)
     }
-  }, [password, animationEnabled])
+  }, [password, options.animation, options.alphabets])
 
   return (
     <Container>
@@ -55,80 +53,82 @@ const App: React.FC = () => {
         </span>
         &nbsp; Password Generator
       </h1>
-      <h2>Length: {length} </h2>
+      <h2>Length: {options.length} </h2>
       <Slider
-        value={length}
+        value={options.length}
         onChange={(length: number) =>
-          setLength((options.current.length = length))
+          setOptions(options => ({ ...options, length }))
         }
       />
       <h2>Characters:</h2>
       <InputGroup>
         <Checkbox
           label="Lowercase (a-z)"
-          onChange={(checked: boolean) =>
-            checked
-              ? options.current.alphabets.push(Alphabets.Lowercase)
-              : options.current.alphabets.filter(a => a !== Alphabets.Lowercase)
-          }
+          onChange={(checked: boolean) => {
+            const newAlphabets = checked
+              ? [...options.alphabets, Alphabets.Lowercase]
+              : options.alphabets.filter(a => a !== Alphabets.Lowercase)
+
+            setOptions(options => ({ ...options, alphabets: newAlphabets }))
+          }}
         />
       </InputGroup>
       <InputGroup>
         <Checkbox
           label="Uppercase (A-Z)"
-          onChange={(checked: boolean) =>
-            checked
-              ? options.current.alphabets.push(Alphabets.Uppercase)
-              : options.current.alphabets.filter(a => a !== Alphabets.Uppercase)
-          }
+          onChange={(checked: boolean) => {
+            const newAlphabets = checked
+              ? [...options.alphabets, Alphabets.Uppercase]
+              : options.alphabets.filter(a => a !== Alphabets.Uppercase)
+
+            setOptions(options => ({ ...options, alphabets: newAlphabets }))
+          }}
         />
       </InputGroup>
       <InputGroup>
         <Checkbox
           label="Numbers (0-9)"
-          onChange={(checked: boolean) =>
-            checked
-              ? options.current.alphabets.push(Alphabets.Numeric)
-              : options.current.alphabets.filter(a => a !== Alphabets.Numeric)
-          }
+          onChange={(checked: boolean) => {
+            const newAlphabets = checked
+              ? [...options.alphabets, Alphabets.Numeric]
+              : options.alphabets.filter(a => a !== Alphabets.Numeric)
+
+            setOptions(options => ({ ...options, alphabets: newAlphabets }))
+          }}
         />
       </InputGroup>
       <InputGroup>
         <Checkbox
           label="Symbols (*!@%_#)"
-          onChange={(checked: boolean) =>
-            checked
-              ? options.current.alphabets.push(Alphabets.Symbols)
-              : options.current.alphabets.filter(a => a !== Alphabets.Symbols)
-          }
+          onChange={(checked: boolean) => {
+            const newAlphabets = checked
+              ? [...options.alphabets, Alphabets.Symbols]
+              : options.alphabets.filter(a => a !== Alphabets.Symbols)
+
+            setOptions(options => ({ ...options, alphabets: newAlphabets }))
+          }}
         />
       </InputGroup>
       <h2>Options:</h2>
       <InputGroup>
         <Checkbox
           label="Animation"
-          onChange={(checked: boolean) => setAnimationEnabled(checked)}
+          onChange={(checked: boolean) =>
+            setOptions(options => ({ ...options, animation: checked }))
+          }
           checked
         />
       </InputGroup>
       <Button
         type="submit"
-        onClick={() => {
-          if (options.current.alphabets.length === 0) {
-            alert(
-              'Please select at least one set of characters to generate the password!',
-            )
-            return
-          }
-
-          setPassword(getRandomPassword(options.current))
-        }}
+        disabled={options.alphabets.length === 0}
+        onClick={() => setPassword(getRandomPassword(options))}
       >
         Generate
       </Button>
       <Result
         text={password}
-        displayText={animationEnabled ? shuffledPassword : password}
+        displayText={options.animation ? shuffledPassword : password}
       />
     </Container>
   )

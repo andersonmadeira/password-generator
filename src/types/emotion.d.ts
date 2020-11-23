@@ -6,6 +6,7 @@ declare module '@emotion/react' {
       primary: string
       primaryLight: string
       primaryDark: string
+      disabled: string
     }
   }
 }

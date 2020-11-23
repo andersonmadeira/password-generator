@@ -6,19 +6,15 @@ export enum Alphabets {
 }
 
 export type GenerationOptions = {
-  lowercase?: boolean
-  uppercase?: boolean
-  numeric?: boolean
-  symbols?: boolean
+  alphabets: Alphabets[]
   length: number
 }
 
+export const combineAlphabets = (alphabets: Alphabets[]): string =>
+  alphabets.reduce((acc, alphabet) => acc + alphabet, '')
+
 export function getRandomPassword(options: GenerationOptions): string {
-  const alphabet =
-    (options.lowercase ? Alphabets.Lowercase : '') +
-    (options.uppercase ? Alphabets.Uppercase : '') +
-    (options.numeric ? Alphabets.Numeric : '') +
-    (options.symbols ? Alphabets.Symbols : '')
+  const alphabet = combineAlphabets(options.alphabets)
   let result = ''
 
   for (let i = 0; i < options.length; i++) {
@@ -31,11 +27,7 @@ export function getRandomPassword(options: GenerationOptions): string {
 }
 
 export function getRandomChar(options: GenerationOptions): string {
-  const alphabet =
-    (options.lowercase ? Alphabets.Lowercase : '') +
-    (options.uppercase ? Alphabets.Uppercase : '') +
-    (options.numeric ? Alphabets.Numeric : '') +
-    (options.symbols ? Alphabets.Symbols : '')
+  const alphabet = combineAlphabets(options.alphabets)
 
   return alphabet.charAt(Math.floor(Math.random() * alphabet.length))
 }

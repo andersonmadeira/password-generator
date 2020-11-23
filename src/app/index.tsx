@@ -1,18 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
-import styled from '@emotion/styled'
 
-import { getRandomPassword, getRandomChar, GenerationOptions } from './utils'
-import { Slider, Checkbox, Result, Button } from './components'
-
-export const InputGroup = styled.div`
-  display: block;
-`
-
-export const Container = styled.div`
-  max-width: 550px;
-  margin: 0 auto;
-  padding: 0 20px 20px 20px;
-`
+import {
+  getRandomPassword,
+  getRandomChar,
+  GenerationOptions,
+  Alphabets,
+} from '../utils'
+import { Slider, Checkbox, Result, Button } from '../components'
+import { Container, InputGroup } from './styles'
 
 const App: React.FC = () => {
   const [password, setPassword] = useState('')
@@ -20,10 +15,7 @@ const App: React.FC = () => {
   const [length, setLength] = useState(20)
   const [animationEnabled, setAnimationEnabled] = useState(true)
   const options = useRef<GenerationOptions>({
-    lowercase: false,
-    uppercase: false,
-    numeric: false,
-    symbols: false,
+    alphabets: [],
     length: 20,
   })
 
@@ -74,25 +66,41 @@ const App: React.FC = () => {
       <InputGroup>
         <Checkbox
           label="Lowercase (a-z)"
-          onChange={(checked: boolean) => (options.current.lowercase = checked)}
+          onChange={(checked: boolean) =>
+            checked
+              ? options.current.alphabets.push(Alphabets.Lowercase)
+              : options.current.alphabets.filter(a => a !== Alphabets.Lowercase)
+          }
         />
       </InputGroup>
       <InputGroup>
         <Checkbox
           label="Uppercase (A-Z)"
-          onChange={(checked: boolean) => (options.current.uppercase = checked)}
+          onChange={(checked: boolean) =>
+            checked
+              ? options.current.alphabets.push(Alphabets.Uppercase)
+              : options.current.alphabets.filter(a => a !== Alphabets.Uppercase)
+          }
         />
       </InputGroup>
       <InputGroup>
         <Checkbox
           label="Numbers (0-9)"
-          onChange={(checked: boolean) => (options.current.numeric = checked)}
+          onChange={(checked: boolean) =>
+            checked
+              ? options.current.alphabets.push(Alphabets.Numeric)
+              : options.current.alphabets.filter(a => a !== Alphabets.Numeric)
+          }
         />
       </InputGroup>
       <InputGroup>
         <Checkbox
           label="Symbols (*!@%_#)"
-          onChange={(checked: boolean) => (options.current.symbols = checked)}
+          onChange={(checked: boolean) =>
+            checked
+              ? options.current.alphabets.push(Alphabets.Symbols)
+              : options.current.alphabets.filter(a => a !== Alphabets.Symbols)
+          }
         />
       </InputGroup>
       <h2>Options:</h2>
@@ -106,12 +114,7 @@ const App: React.FC = () => {
       <Button
         type="submit"
         onClick={() => {
-          if (
-            !options.current.lowercase &&
-            !options.current.uppercase &&
-            !options.current.numeric &&
-            !options.current.symbols
-          ) {
+          if (options.current.alphabets.length === 0) {
             alert(
               'Please select at least one set of characters to generate the password!',
             )

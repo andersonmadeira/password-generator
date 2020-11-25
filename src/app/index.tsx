@@ -8,7 +8,13 @@ import {
   combineAlphabets,
 } from '../utils'
 import { Slider, Checkbox, Result, Button } from '../components'
-import { Container, InputGroup } from './styles'
+import {
+  Container,
+  InputGroup,
+  Title,
+  SubTitle,
+  GenerateButton,
+} from './styles'
 
 const App: React.FC = () => {
   const [password, setPassword] = useState('')
@@ -47,20 +53,20 @@ const App: React.FC = () => {
 
   return (
     <Container>
-      <h1>
+      <Title>
         <span role="img" aria-label="Key Icon">
           🔑
         </span>
         &nbsp; Password Generator
-      </h1>
-      <h2>Length: {options.length} </h2>
+      </Title>
+      <SubTitle>Length: {options.length} </SubTitle>
       <Slider
         value={options.length}
         onChange={(length: number) =>
           setOptions(options => ({ ...options, length }))
         }
       />
-      <h2>Characters:</h2>
+      <SubTitle>Characters:</SubTitle>
       <InputGroup>
         <Checkbox
           label="Lowercase (a-z)"
@@ -109,7 +115,7 @@ const App: React.FC = () => {
           }}
         />
       </InputGroup>
-      <h2>Options:</h2>
+      <SubTitle>Options:</SubTitle>
       <InputGroup>
         <Checkbox
           label="Animation"
@@ -119,13 +125,13 @@ const App: React.FC = () => {
           checked
         />
       </InputGroup>
-      <Button
+      <GenerateButton
         type="submit"
         disabled={options.alphabets.length === 0}
         onClick={() => setPassword(getRandomPassword(options))}
       >
         Generate
-      </Button>
+      </GenerateButton>
       <Result
         text={password}
         displayText={options.animation ? shuffledPassword : password}

@@ -3,13 +3,14 @@ import { Card } from '../card'
 
 import { CopyButton } from '../copy-button'
 import { ResultProps } from './types'
+import { ResultCard } from './styles'
 
 export const Result: React.FC<ResultProps> = ({ text, displayText }) =>
   displayText ? (
-    <Card>
+    <ResultCard>
       <CopyButton text={text} />
       {displayText}
-    </Card>
+    </ResultCard>
   ) : null
 
 export * from './types'

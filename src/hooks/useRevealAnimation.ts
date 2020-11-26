@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { getRandomChar } from '../utils'
 
@@ -16,11 +16,16 @@ export function useRevealAnimation({
   text,
 }: RevealAnimationParams): RevealAnimationReturn {
   const [temporaryText, setTemporaryText] = useState('')
+  const alphabetUsed = useRef(alphabet)
+
+  useEffect(() => {
+    alphabetUsed.current = alphabet
+  }, [alphabet])
 
   useEffect(() => {
     let charIndex = 0
 
-    if (text) {
+    if (text && alphabetUsed.current) {
       const shuffleInterval = setInterval(() => {
         if (charIndex > text.length) {
           clearInterval(shuffleInterval)
@@ -29,7 +34,7 @@ export function useRevealAnimation({
 
         const newTemporaryText = [...new Array(text.length)]
           .map((empty, i) =>
-            i < charIndex ? text[i] : getRandomChar(alphabet),
+            i < charIndex ? text[i] : getRandomChar(alphabetUsed.current),
           )
           .join('')
 
@@ -40,7 +45,7 @@ export function useRevealAnimation({
 
       return () => clearInterval(shuffleInterval)
     }
-  }, [text, alphabet])
+  }, [text])
 
   return {
     temporaryText,

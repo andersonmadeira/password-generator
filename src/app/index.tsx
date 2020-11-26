@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 
 import {
   getRandomPassword,
-  getRandomChar,
   GenerationOptions,
   combineAlphabets,
   availableAlphabets,
@@ -15,41 +14,24 @@ import {
   SubTitle,
   GenerateButton,
 } from './styles'
+import { useRevealAnimation } from '../hooks'
 
 const App: React.FC = () => {
   const [password, setPassword] = useState('')
-  const [shuffledPassword, setShuffledPassword] = useState('')
   const [options, setOptions] = useState<GenerationOptions>({
     alphabets: [],
     length: 20,
     animation: true,
   })
+  const [combinedAlphabets, setCombinedAlphabets] = useState('')
+  const { temporaryText } = useRevealAnimation({
+    alphabet: combinedAlphabets,
+    text: password,
+  })
 
   useEffect(() => {
-    let charIndex = 0
-    const alphabet = combineAlphabets(options.alphabets)
-
-    if (password && options.animation) {
-      const shuffleInterval = setInterval(() => {
-        if (charIndex > password.length) {
-          clearInterval(shuffleInterval)
-          return
-        }
-
-        const newSufflePassword = [...new Array(password.length)]
-          .map((empty, i) =>
-            i < charIndex ? password[i] : getRandomChar(alphabet),
-          )
-          .join('')
-
-        setShuffledPassword(newSufflePassword)
-
-        charIndex++
-      }, 30)
-
-      return () => clearInterval(shuffleInterval)
-    }
-  }, [password, options.animation, options.alphabets])
+    setCombinedAlphabets(combineAlphabets(options.alphabets))
+  }, [options.alphabets])
 
   return (
     <Container>
@@ -100,7 +82,7 @@ const App: React.FC = () => {
       </GenerateButton>
       <Result
         text={password}
-        displayText={options.animation ? shuffledPassword : password}
+        displayText={options.animation ? temporaryText : password}
       />
     </Container>
   )

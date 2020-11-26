@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react'
 
 import {
   getRandomPassword,
-  getRandomChar,
   GenerationOptions,
-  Alphabets,
   combineAlphabets,
+  availableAlphabets,
 } from '../utils'
-import { Slider, Checkbox, Result, Button } from '../components'
+import { Slider, Checkbox, Result } from '../components'
 import {
   Container,
   InputGroup,
@@ -15,41 +14,24 @@ import {
   SubTitle,
   GenerateButton,
 } from './styles'
+import { useRevealAnimation } from '../hooks'
 
 const App: React.FC = () => {
   const [password, setPassword] = useState('')
-  const [shuffledPassword, setShuffledPassword] = useState('')
   const [options, setOptions] = useState<GenerationOptions>({
     alphabets: [],
     length: 20,
     animation: true,
   })
+  const [combinedAlphabets, setCombinedAlphabets] = useState('')
+  const { temporaryText } = useRevealAnimation({
+    alphabet: combinedAlphabets,
+    text: password,
+  })
 
   useEffect(() => {
-    let charIndex = 0
-    const alphabet = combineAlphabets(options.alphabets)
-
-    if (password && options.animation) {
-      const shuffleInterval = setInterval(() => {
-        if (charIndex > password.length) {
-          clearInterval(shuffleInterval)
-          return
-        }
-
-        const newSufflePassword = [...new Array(password.length)]
-          .map((empty, i) =>
-            i < charIndex ? password[i] : getRandomChar(alphabet),
-          )
-          .join('')
-
-        setShuffledPassword(newSufflePassword)
-
-        charIndex++
-      }, 30)
-
-      return () => clearInterval(shuffleInterval)
-    }
-  }, [password, options.animation, options.alphabets])
+    setCombinedAlphabets(combineAlphabets(options.alphabets))
+  }, [options.alphabets])
 
   return (
     <Container>
@@ -67,54 +49,20 @@ const App: React.FC = () => {
         }
       />
       <SubTitle>Characters:</SubTitle>
-      <InputGroup>
-        <Checkbox
-          label="Lowercase (a-z)"
-          onChange={(checked: boolean) => {
-            const newAlphabets = checked
-              ? [...options.alphabets, Alphabets.Lowercase]
-              : options.alphabets.filter(a => a !== Alphabets.Lowercase)
+      {availableAlphabets.map(alphabet => (
+        <InputGroup key={alphabet.label}>
+          <Checkbox
+            label={alphabet.label}
+            onChange={(checked: boolean) => {
+              const newAlphabets = checked
+                ? [...options.alphabets, alphabet.value]
+                : options.alphabets.filter(a => a !== alphabet.value)
 
-            setOptions(options => ({ ...options, alphabets: newAlphabets }))
-          }}
-        />
-      </InputGroup>
-      <InputGroup>
-        <Checkbox
-          label="Uppercase (A-Z)"
-          onChange={(checked: boolean) => {
-            const newAlphabets = checked
-              ? [...options.alphabets, Alphabets.Uppercase]
-              : options.alphabets.filter(a => a !== Alphabets.Uppercase)
-
-            setOptions(options => ({ ...options, alphabets: newAlphabets }))
-          }}
-        />
-      </InputGroup>
-      <InputGroup>
-        <Checkbox
-          label="Numbers (0-9)"
-          onChange={(checked: boolean) => {
-            const newAlphabets = checked
-              ? [...options.alphabets, Alphabets.Numeric]
-              : options.alphabets.filter(a => a !== Alphabets.Numeric)
-
-            setOptions(options => ({ ...options, alphabets: newAlphabets }))
-          }}
-        />
-      </InputGroup>
-      <InputGroup>
-        <Checkbox
-          label="Symbols (*!@%_#)"
-          onChange={(checked: boolean) => {
-            const newAlphabets = checked
-              ? [...options.alphabets, Alphabets.Symbols]
-              : options.alphabets.filter(a => a !== Alphabets.Symbols)
-
-            setOptions(options => ({ ...options, alphabets: newAlphabets }))
-          }}
-        />
-      </InputGroup>
+              setOptions(options => ({ ...options, alphabets: newAlphabets }))
+            }}
+          />
+        </InputGroup>
+      ))}
       <SubTitle>Options:</SubTitle>
       <InputGroup>
         <Checkbox
@@ -134,7 +82,7 @@ const App: React.FC = () => {
       </GenerateButton>
       <Result
         text={password}
-        displayText={options.animation ? shuffledPassword : password}
+        displayText={options.animation ? temporaryText : password}
       />
     </Container>
   )

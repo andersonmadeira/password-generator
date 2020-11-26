@@ -5,6 +5,30 @@ export enum Alphabets {
   Symbols = '!@#$%&*()_`´{[^~]};:/?<>,.=-+',
 }
 
+export type AlphabetDescriptor = {
+  label: string
+  value: Alphabets
+}
+
+export const availableAlphabets: AlphabetDescriptor[] = [
+  {
+    label: 'Lowercase (a-z)',
+    value: Alphabets.Lowercase,
+  },
+  {
+    label: 'Uppercase (A-Z)',
+    value: Alphabets.Uppercase,
+  },
+  {
+    label: 'Numbers (0-9)',
+    value: Alphabets.Numeric,
+  },
+  {
+    label: 'Symbols (*!@%_#)',
+    value: Alphabets.Symbols,
+  },
+]
+
 export type GenerationOptions = {
   alphabets: Alphabets[]
   length: number

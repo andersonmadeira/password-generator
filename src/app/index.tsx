@@ -4,10 +4,10 @@ import {
   getRandomPassword,
   getRandomChar,
   GenerationOptions,
-  Alphabets,
   combineAlphabets,
+  availableAlphabets,
 } from '../utils'
-import { Slider, Checkbox, Result, Button } from '../components'
+import { Slider, Checkbox, Result } from '../components'
 import {
   Container,
   InputGroup,
@@ -67,54 +67,20 @@ const App: React.FC = () => {
         }
       />
       <SubTitle>Characters:</SubTitle>
-      <InputGroup>
-        <Checkbox
-          label="Lowercase (a-z)"
-          onChange={(checked: boolean) => {
-            const newAlphabets = checked
-              ? [...options.alphabets, Alphabets.Lowercase]
-              : options.alphabets.filter(a => a !== Alphabets.Lowercase)
+      {availableAlphabets.map(alphabet => (
+        <InputGroup key={alphabet.label}>
+          <Checkbox
+            label={alphabet.label}
+            onChange={(checked: boolean) => {
+              const newAlphabets = checked
+                ? [...options.alphabets, alphabet.value]
+                : options.alphabets.filter(a => a !== alphabet.value)
 
-            setOptions(options => ({ ...options, alphabets: newAlphabets }))
-          }}
-        />
-      </InputGroup>
-      <InputGroup>
-        <Checkbox
-          label="Uppercase (A-Z)"
-          onChange={(checked: boolean) => {
-            const newAlphabets = checked
-              ? [...options.alphabets, Alphabets.Uppercase]
-              : options.alphabets.filter(a => a !== Alphabets.Uppercase)
-
-            setOptions(options => ({ ...options, alphabets: newAlphabets }))
-          }}
-        />
-      </InputGroup>
-      <InputGroup>
-        <Checkbox
-          label="Numbers (0-9)"
-          onChange={(checked: boolean) => {
-            const newAlphabets = checked
-              ? [...options.alphabets, Alphabets.Numeric]
-              : options.alphabets.filter(a => a !== Alphabets.Numeric)
-
-            setOptions(options => ({ ...options, alphabets: newAlphabets }))
-          }}
-        />
-      </InputGroup>
-      <InputGroup>
-        <Checkbox
-          label="Symbols (*!@%_#)"
-          onChange={(checked: boolean) => {
-            const newAlphabets = checked
-              ? [...options.alphabets, Alphabets.Symbols]
-              : options.alphabets.filter(a => a !== Alphabets.Symbols)
-
-            setOptions(options => ({ ...options, alphabets: newAlphabets }))
-          }}
-        />
-      </InputGroup>
+              setOptions(options => ({ ...options, alphabets: newAlphabets }))
+            }}
+          />
+        </InputGroup>
+      ))}
       <SubTitle>Options:</SubTitle>
       <InputGroup>
         <Checkbox
